@@ -16,6 +16,7 @@ class SARAR:
         """
         self.Q = Q
         self.num_instuments = num_instruments
+        self.params = None
 
     def fit(
         self, y: np.ndarray, X: np.ndarray, W: List[np.ndarray], M: List[np.ndarray]
@@ -70,6 +71,7 @@ class SARAR:
             )
         )
         self._rho = self._GMM()
+        self.params = np.concatenate([self._delta, self._rho])
 
     def _TSLS(self) -> np.ndarray:
         """Perform a two stage least squares estimation
@@ -94,6 +96,15 @@ class SARAR:
         Z_hat = np.concatenate([self.X, Y_bar_hat], axis=1)
         delta = np.dot(np.dot(np.linalg.inv(np.dot(Z_hat.T, Z_hat)), Z_hat.T), self.y)
         return delta
+
+    def get_params(self) -> np.ndarray:
+        """Return estimated model parameters
+
+        :return: Estimated model parameters. [beta, delta, rho]
+        :rtype: np.ndarray
+        """
+        assert self.params is not None, "Fit model first"
+        return self.params
 
     def _GMM(self) -> np.ndarray:
         """Perform a GMM estimation step for autoregressive disturbances
