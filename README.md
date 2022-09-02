@@ -9,3 +9,7 @@ At the moment, the model outputs the TSLS estimates for the exogenous variables 
 ## Installation
 
 `pip install pysarar`
+
+## Documentation
+
+[Readthedocs](https://pysarar.readthedocs.io/en/latest/index.html)
